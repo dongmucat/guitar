@@ -15,7 +15,7 @@
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -24,7 +24,7 @@
         .container {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             max-width: 800px;
             width: 100%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -33,10 +33,10 @@
         
         .help-icon {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
+            top: 15px;
+            left: 15px;
+            width: 35px;
+            height: 35px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
             display: flex;
@@ -44,7 +44,7 @@
             justify-content: center;
             cursor: pointer;
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             transition: transform 0.3s;
             z-index: 10;
@@ -114,15 +114,16 @@
         h1 {
             text-align: center;
             color: #333;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin-bottom: 20px;
+            font-size: 22px;
+            padding: 0 10px;
         }
         
         .settings {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         .settings label {
@@ -168,6 +169,7 @@
             border-radius: 15px;
             margin-bottom: 20px;
             overflow: hidden;
+            position: relative;
         }
         
         .progress-bar {
@@ -179,11 +181,14 @@
             justify-content: center;
             color: white;
             font-weight: bold;
+            font-size: 14px;
+            min-width: 60px;
+            white-space: nowrap;
         }
         
         .question {
             background: #f8f9fa;
-            padding: 30px;
+            padding: 20px 15px;
             border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
@@ -191,16 +196,16 @@
         
         .question h2 {
             color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
         
         .fretboard-info {
             background: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             margin-top: 15px;
-            font-size: 18px;
+            font-size: 16px;
             color: #667eea;
             font-weight: bold;
         }
@@ -208,19 +213,20 @@
         .options {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 10px;
             margin-bottom: 20px;
         }
         
         .option {
-            padding: 20px;
+            padding: 15px;
             background: white;
             border: 3px solid #ddd;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
+            text-align: center;
         }
         
         .option:hover {
@@ -265,32 +271,129 @@
         .result {
             display: none;
             text-align: center;
-            padding: 30px;
+            padding: 20px 10px;
         }
         
         .result h2 {
             color: #333;
-            margin-bottom: 20px;
-            font-size: 28px;
+            margin-bottom: 15px;
+            font-size: 24px;
         }
         
         .score {
-            font-size: 48px;
+            font-size: 36px;
             color: #667eea;
             font-weight: bold;
-            margin: 20px 0;
+            margin: 15px 0;
+            word-break: break-all;
         }
         
         .restart-btn {
-            padding: 15px 40px;
+            padding: 15px 30px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+                align-items: flex-start;
+                padding-top: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .help-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+                top: 10px;
+                left: 10px;
+            }
+            
+            h1 {
+                font-size: 18px;
+                margin-bottom: 15px;
+                padding-right: 45px;
+            }
+            
+            .settings {
+                padding: 12px;
+            }
+            
+            .settings label {
+                font-size: 14px;
+            }
+            
+            .settings select {
+                padding: 8px;
+                font-size: 14px;
+            }
+            
+            .start-btn {
+                padding: 12px;
+                font-size: 16px;
+            }
+            
+            .progress {
+                height: 25px;
+            }
+            
+            .progress-bar {
+                font-size: 12px;
+                min-width: 50px;
+            }
+            
+            .question {
+                padding: 15px 10px;
+            }
+            
+            .question h2 {
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            
+            .fretboard-info {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .options {
+                gap: 8px;
+            }
+            
+            .option {
+                padding: 12px 8px;
+                font-size: 14px;
+            }
+            
+            .next-btn {
+                padding: 12px;
+                font-size: 16px;
+            }
+            
+            .result h2 {
+                font-size: 20px;
+            }
+            
+            .score {
+                font-size: 28px;
+            }
+            
+            .restart-btn {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -298,7 +401,7 @@
     <div class="modal" id="helpModal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-modal" onclick="closeModal()">×</button>
-            <img src="https://openres.xfyun.cn/xfyundoc/2026-01-04/049754ce-3730-4906-a9b8-5e931194da9d/1767516582013/6e8bf5bf049458ff4a8dadffdc7171e.jpg" alt="C大调把位图">
+            <img src="https://openres.xfyun.cn/xfyundoc/2026-01-04/7f53399f-4f5a-467e-af58-8d7435db7430/1767518193767/0bb1d230a66c5a86a54a9351d080b66.jpg" alt="C大调把位图">
         </div>
     </div>
     
