@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吉他指板C大调音符练习</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .help-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            transition: transform 0.3s;
+            z-index: 10;
+        }
+        
+        .help-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            overflow: auto;
+        }
+        
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .close-modal:hover {
+            background: #d32f2f;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .settings {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .settings label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .settings select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .start-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .quiz-area {
+            display: none;
+        }
+        
+        .progress {
+            background: #e0e0e0;
+            height: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .question {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .question h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .fretboard-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 18px;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .option {
+            padding: 20px;
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+        
+        .option.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        
+        .option.wrong {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .next-btn {
+            width: 100%;
+            padding: 15px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .next-btn:hover {
+            background: #45a049;
+        }
+        
+        .result {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .result h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .score {
+            font-size: 48px;
+            color: #667eea;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .restart-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal" id="helpModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeModal()">×</button>
+            <img src="https://openres.xfyun.cn/xfyundoc/2026-01-04/049754ce-3730-4906-a9b8-5e931194da9d/1767516582013/6e8bf5bf049458ff4a8dadffdc7171e.jpg" alt="C大调把位图">
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="help-icon" onclick="openModal()" title="查看C大调把位图">?</div>
+        <h1>🎸 吉他指板C大调音符练习</h1>
+        
+        <div class="settings" id="settings">
+            <label for="fretRange">选择练习范围：</label>
+            <select id="fretRange">
+                <option value="3">前3品</option>
+                <option value="5">前5品</option>
+                <option value="7">前7品</option>
+                <option value="9">前9品</option>
+                <option value="12">前12品</option>
+                <option value="15" selected>前15品</option>
+            </select>
+            
+            <label for="questionCount">选择题目数量：</label>
+            <select id="questionCount">
+                <option value="10" selected>10题</option>
+                <option value="20">20题</option>
+            </select>
+            <button class="start-btn" onclick="startQuiz()">开始练习</button>
+        </div>
+        
+        <div class="quiz-area" id="quizArea">
+            <div class="progress">
+                <div class="progress-bar" id="progressBar">0/10</div>
+            </div>
+            
+            <div class="question">
+                <h2 id="questionText"></h2>
+                <div class="fretboard-info" id="fretboardInfo"></div>
+            </div>
+            
+            <div class="options" id="options"></div>
+            
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题</button>
+        </div>
+        
+        <div class="result" id="result">
+            <h2>练习完成！</h2>
+            <div class="score" id="finalScore"></div>
+            <p id="resultMessage"></p>
+            <button class="restart-btn" onclick="restart()">重新开始</button>
+        </div>
+    </div>
+
+    <script>
+        // C大调音符
+        const cMajorNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+        
+        // 吉他六根弦的空弦音（从1弦到6弦）
+        const openStrings = ['E', 'B', 'G', 'D', 'A', 'E'];
+        
+        // 所有半音
+        const allNotes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let questions = [];
+        let maxFret = 15;
+        let totalQuestions = 10;
+        
+        // 获取指定弦和品位的音符
+        function getNoteAtFret(string, fret) {
+            const openNote = openStrings[string - 1];
+            const startIndex = allNotes.indexOf(openNote);
+            const noteIndex = (startIndex + fret) % 12;
+            return allNotes[noteIndex];
+        }
+        
+        // 生成随机位置
+        function generateRandomPosition() {
+            const string = Math.floor(Math.random() * 6) + 1;
+            const fret = Math.floor(Math.random() * maxFret) + 1;
+            const note = getNoteAtFret(string, fret);
+            
+            // 只选择C大调音符
+            if (cMajorNotes.includes(note)) {
+                return { string, fret, note };
+            }
+            return generateRandomPosition();
+        }
+        
+        // 生成干扰选项
+        function generateOptions(correctNote) {
+            const options = [correctNote];
+            const availableNotes = cMajorNotes.filter(n => n !== correctNote);
+            
+            while (options.length < 4) {
+                const randomNote = availableNotes[Math.floor(Math.random() * availableNotes.length)];
+                if (!options.includes(randomNote)) {
+                    options.push(randomNote);
+                }
+            }
+            
+            return options.sort(() => Math.random() - 0.5);
+        }
+        
+        // 生成题目
+        function generateQuestions() {
+            questions = [];
+            for (let i = 0; i < totalQuestions; i++) {
+                const position = generateRandomPosition();
+                const options = generateOptions(position.note);
+                questions.push({ ...position, options });
+            }
+        }
+        
+        // 开始测验
+        function startQuiz() {
+            maxFret = parseInt(document.getElementById('fretRange').value);
+            totalQuestions = parseInt(document.getElementById('questionCount').value);
+            generateQuestions();
+            currentQuestion = 0;
+            score = 0;
+            
+            document.getElementById('settings').style.display = 'none';
+            document.getElementById('quizArea').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            
+            showQuestion();
+        }
+        
+        // 显示题目
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('questionText').textContent = 
+                `第 ${currentQuestion + 1} 题：这是什么音符？`;
+            document.getElementById('fretboardInfo').textContent = 
+                `第 ${q.string} 弦，第 ${q.fret} 品`;
+            
+            const optionsDiv = document.getElementById('options');
+            optionsDiv.innerHTML = '';
+            
+            q.options.forEach(option => {
+                const btn = document.createElement('div');
+                btn.className = 'option';
+                btn.textContent = option;
+                btn.onclick = () => checkAnswer(option, q.note, btn);
+                optionsDiv.appendChild(btn);
+            });
+            
+            document.getElementById('nextBtn').style.display = 'none';
+            updateProgress();
+        }
+        
+        // 检查答案
+        function checkAnswer(selected, correct, btn) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                if (opt.textContent === correct) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            if (selected === correct) {
+                score++;
+            } else {
+                btn.classList.add('wrong');
+            }
+            
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+        
+        // 下一题
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < totalQuestions) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+        
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = `${currentQuestion + 1}/${totalQuestions}`;
+        }
+        
+        // 显示结果
+        function showResult() {
+            document.getElementById('quizArea').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            
+            const percentage = (score / totalQuestions) * 100;
+            document.getElementById('finalScore').textContent = `${score}/${totalQuestions} (${percentage.toFixed(0)}%)`;
+            
+            let message = '';
+            if (percentage >= 90) {
+                message = '太棒了！你对指板非常熟悉！🎉';
+            } else if (percentage >= 70) {
+                message = '很好！继续加油！👍';
+            } else if (percentage >= 50) {
+                message = '还不错，多多练习会更好！💪';
+            } else {
+                message = '继续努力，熟能生巧！🎸';
+            }
+            
+            document.getElementById('resultMessage').textContent = message;
+        }
+        
+        // 重新开始
+        function restart() {
+            document.getElementById('settings').style.display = 'block';
+            document.getElementById('quizArea').style.display = 'none';
+            document.getElementById('result').style.display = 'none';
+        }
+        
+        // 打开提示图弹窗
+        function openModal() {
+            document.getElementById('helpModal').classList.add('active');
+        }
+        
+        // 关闭提示图弹窗
+        function closeModal() {
+            document.getElementById('helpModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
